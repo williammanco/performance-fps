@@ -1,15 +1,17 @@
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
-// import builtins from 'rollup-plugin-node-builtins';
 import replace from 'rollup-plugin-replace';
 import serve from 'rollup-plugin-serve';
 import eslint from 'rollup-plugin-eslint';
 import glsl from 'rollup-plugin-glsl'; // eslint-disable-line
+import cleaner from 'rollup-plugin-cleaner';
+import { terser } from 'rollup-plugin-terser';
+
 import eslintConfig from 'eslint-config-airbnb-base';
 
 import pkg from './package.json';
 
-// const production = !process.env.ROLLUP_WATCH;
+const production = !process.env.ROLLUP_WATCH;
 
 export default [
   {
@@ -18,6 +20,7 @@ export default [
       name: 'index',
       file: pkg.browser,
       format: 'umd',
+      sourceMap: !production,
     },
     plugins: [
       resolve(),
@@ -28,6 +31,23 @@ export default [
       replace({
         'process.env.NODE_ENV': JSON.stringify('production'),
       }),
+      production && terser(),
+      cleaner({
+        targets: [
+          './dist/',
+        ],
+      }),
+    ],
+  },
+  {
+    input: 'src/main.js',
+    external: ['ms'],
+    output: [
+      { file: pkg.main, format: 'cjs', sourceMap: !production },
+      { file: pkg.module, format: 'es', sourceMap: !production },
+    ],
+    plugins: [
+      production && terser(),
     ],
   },
   {
@@ -35,17 +55,21 @@ export default [
     output: {
       file: 'public/bundle.js',
       format: 'iife',
-      sourcemap: true,
     },
     plugins: [
-      resolve(),
+      !production && resolve(),
+      cleaner({
+        targets: [
+          './public/bundle.*',
+        ],
+      }),
       eslint(eslintConfig),
       glsl({
         include: 'src/**/*.glsl',
-        sourceMap: false,
+        sourceMap: !production,
       }),
       commonjs(),
-      serve('public'),
+      !production && serve('public'),
     ],
   },
 ];
