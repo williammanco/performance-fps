@@ -80,7 +80,8 @@ const checkFps = new PerformanceFps({
 
 Options | Default | Unit | Info
 --- | --- | --- | ---
-`min|max`| `-2` | `level` |use this option to limit level of performance returned
+`min`| `-2` | `level` | use this option to limit min level of performance returned
+`max`| `3` | `level` | use this option to limit max level of performance returned
 `start`| `0` | `level` | start value of level
 `samples`| `30` | `-` | used to take the average of fps, more (not much) samples make the average more accurate but increase the time to check, one sample take every ms value on accuracy option
 `accuracy`| `96` | `ms` | time between every samples, more time less quality of check, this depends on current performance, if you have ~16ms/60fps the sample is taken every ~96ms
