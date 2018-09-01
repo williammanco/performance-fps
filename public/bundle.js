@@ -5782,35 +5782,58 @@ void main() {
 	  }
 	}
 
+	/**
+	 * Performance check tool for scalable quality project.
+	 * Use this tool to check current state of performance based on fps/ms of project during navigation.
+	 * @export
+	 * @class PerformanceFps
+	 */
 	class PerformanceFps {
+	  /**
+	   * Convert FPS to ms
+	   * @name fpsToMs
+	   * @static
+	   * @param {number} value fps
+	   * @returns {number} ms
+	   * @memberof PerformanceFps
+	   */
 	  static fpsToMs(value) {
 	    return (1 / value) * 1000;
 	  }
+
+	  /**
+	   * Convert ms to FPS
+	   * @name msToFps
+	   * @static
+	   * @param {number} value ms
+	   * @returns {number} fps
+	   * @memberof PerformanceFps
+	   */
 	  static msToFps(value) {
 	    return 1000 / value;
 	  }
-	  get currentFps() {
-	    return Math.min(1000 / this.ms, this.props.maxFps);
-	  }
-	  get currentPerformance() {
-	    return this.performance;
-	  }
+
+	  /**
+	   * Creates an instance of PerformanceFps.
+	   * @param {object} props
+	   * @memberof PerformanceFps
+	   */
 	  constructor(props) {
 	    this.events = {};
 	    this.props = Object.assign(
 	      {
-	        min: -2, // ? min value of performance level
-	        max: 3, // ? max value of performance level
-	        start: 0, // ? start performance level
-	        samples: 30, // ? one sample every value of accuracy
-	        accuracy: 96, // ? a check every ~96ms
-	        delay: 1000, // ? delay check after ~1000ms
-	        maxFps: 60, // ? limit max fps
-	        minFps: 30, // ? if lower set true toolow
-	        checkFps: 55, // ? limit fps to check
-	        upperCheckFps: 58, // ? if can try more
-	        maxTryToUpper: 3, // ? time to try upper level
-	        reCheckAfter: 60000, // ? reset performance after 60s
+	        min: -2,
+	        max: 2,
+	        start: 0,
+	        samples: 20,
+	        accuracy: 320,
+	        delay: 2000,
+	        maxFps: 60,
+	        minFps: 30,
+	        checkFps: 54,
+	        upperCheckFps: 58,
+	        maxTryToUpper: 1,
+	        reCheckAfter: 60000,
 	      },
 	      props,
 	    );
@@ -5819,45 +5842,99 @@ void main() {
 
 	    this.reset();
 
-	    this.onPause = this.onPause.bind(this);
-	    document.addEventListener('visibilitychange', this.onPause, false);
+	    this.pause = this.pause.bind(this);
+	    document.addEventListener('visibilitychange', this.pause, false);
 	  }
+
+	  /**
+	   * Create event or get if exist
+	   * @name getEvent
+	   * @returns void
+	   * @memberof PerformanceFps
+	   */
 	  getEvent(eventName) {
 	    if (typeof this.events[eventName] === 'undefined') this.events[eventName] = new Set();
 	    return this.events[eventName];
 	  }
+
+	  /**
+	   * Listener event
+	   * @name on
+	   * @returns void
+	   * @memberof PerformanceFps
+	   */
 	  on(eventName, fn) {
 	    this.getEvent(eventName).add(fn);
 	  }
+
+	  /**
+	   * Emit event
+	   * @name emit
+	   * @returns void
+	   * @memberof PerformanceFps
+	   */
 	  emit(eventName, ...args) {
 	    this.getEvent(eventName).forEach((fn) => {
 	      fn.apply(this, args);
 	    });
 	  }
+
+	  /**
+	   * Remove listener of events
+	   * @name removeListener
+	   * @returns void
+	   * @memberof PerformanceFps
+	   */
 	  removeListener(eventName, fn) {
 	    this.getEvent(eventName).delete(fn);
 	  }
-	  onChange(args) {
-	    return this.on('change', args);
-	  }
-	  onPause() {
+
+	  /**
+	   * Paused
+	   * @name pause
+	   * @returns void
+	   * @memberof PerformanceFps
+	   */
+	  pause() {
 	    this.isPaused = document.hidden;
 	    this.reset();
 	  }
+
+	  /**
+	   * Remove listener
+	   * @name destroy
+	   * @returns void
+	   * @memberof PerformanceFps
+	   */
 	  destroy() {
-	    document.removeEventListener('visibilitychange', this.onPause, false);
+	    document.removeEventListener('visibilitychange', this.pause, false);
 	    this.removeListener('change', this.performance);
 	  }
+
+	  /**
+	   * Reset/Set state
+	   * @name reset
+	   * @param {boolean} soft not reset checked performance, but can upper level
+	   * @returns void
+	   * @memberof PerformanceFps
+	   */
 	  reset(soft) {
+	    const {
+	      start,
+	      maxFps,
+	      reCheckAfter,
+	      checkFps,
+	    } = this.props;
+
 	    this.upper = 0;
-	    this.ms = this.constructor.fpsToMs(this.props.maxFps);
+	    this.ms = this.constructor.fpsToMs(maxFps);
 	    this.average = this.ms;
 
 	    if (!soft) {
 	      this.prev = this.now();
-	      this.performance = this.props.start;
-	      this.reCheckAfter = this.props.reCheckAfter;
-	      this.checkCurrentFps = this.props.checkFps;
+	      this.performance = start;
+	      this.reCheckAfter = reCheckAfter;
+	      this.checkCurrentFps = checkFps;
 	      this.isTooLow = false;
 	      this.failIncrement = 0;
 	      this.elapsedTime = 0;
@@ -5868,8 +5945,67 @@ void main() {
 
 	    if (!this.delay) this.delay = this.props.delay;
 	  }
+
+	  /**
+	   * Check if
+	   * • level is too low
+	   * • level is low compared to limit
+	   * • level is upper
+	   * Use limit number of times to check if level is upper, to avoid bouncing effect
+	   * Emit event of level change only if is changed
+	   * @name setPerformance
+	   * @returns void
+	   * @memberof PerformanceFps
+	   */
+	  setPerformance() {
+	    const {
+	      min,
+	      max,
+	      minFps,
+	      maxTryToUpper,
+	      checkFps,
+	      upperCheckFps,
+	    } = this.props;
+
+	    if (this.constructor.msToFps(this.average) <= minFps) {
+	      this.performance = min;
+	      this.isTooLow = true;
+	    } else if (this.constructor.msToFps(this.average) < this.checkCurrentFps) {
+	      this.performance -= 1;
+	      if (this.upper > 0) this.failIncrement += 1;
+	      this.checkCurrentFps = checkFps;
+	    } else if (
+	      this.constructor.msToFps(this.average) > upperCheckFps &&
+	      this.failIncrement < maxTryToUpper &&
+	      this.performance < max
+	    ) {
+	      this.upper += 1;
+	      this.performance += 1;
+	      this.checkCurrentFps = upperCheckFps;
+	    }
+
+	    if (this.prevPerformance !== this.performance) {
+	      this.emit('change', this.performance);
+	    }
+
+	    this.prevPerformance = this.performance;
+	  }
+
+	  /**
+	   * Update
+	   * @name update
+	   * @returns void
+	   * @memberof PerformanceFps
+	   */
 	  update() {
 	    if (this.isTooLow || this.isPaused) return;
+
+	    const {
+	      accuracy,
+	      min,
+	      samples,
+	    } = this.props;
+
 	    const time = this.now();
 	    const ms = time - this.prev;
 	    this.prev = time;
@@ -5880,11 +6016,14 @@ void main() {
 	    this.storedMs += ms;
 
 	    if (
-	      this.storedMs >= this.props.accuracy &&
-	      this.performance > this.props.min
+	      this.storedMs >= accuracy &&
+	      this.performance > min
 	    ) {
 	      if (ms === 0) return;
+
+	      this.prevPerformance = this.performance;
 	      this.delay = 0;
+
 	      if (time > this.reCheckAfter) {
 	        this.reset(true);
 	        this.reCheckAfter += time;
@@ -5893,30 +6032,9 @@ void main() {
 
 	      this.store.push(ms);
 
-	      if (this.store.length > this.props.samples - 1) {
-	        // calc average in ms
-	        this.average =
-	        this.store.reduce((p, c) => p + c) / this.store.length;
-	        // check performance
-	        if (this.constructor.msToFps(this.average) <= this.props.minFps) {
-	          this.performance = this.props.min;
-	          this.isTooLow = true;
-	        } else if (this.constructor.msToFps(this.average) < this.checkCurrentFps) {
-	          this.performance -= 1;
-	          if (this.upper > 0) this.failIncrement += 1;
-	          this.checkCurrentFps = this.props.checkFps;
-	        } else if (
-	          this.constructor.msToFps(this.average) > this.props.maxFps - 2 &&
-	          this.failIncrement < this.props.maxTryToUpper &&
-	          this.performance < this.props.max
-	        ) {
-	          this.upper += 1;
-	          this.performance += 1;
-	          this.checkCurrentFps = this.props.upperCheckFps;
-	        }
-
-	        this.emit('change', this.performance);
-
+	      if (this.store.length > samples - 1) {
+	        this.average = this.store.reduce((p, c) => p + c) / this.store.length;
+	        this.setPerformance();
 	        this.store = [];
 	      }
 	      this.storedMs = 0;
