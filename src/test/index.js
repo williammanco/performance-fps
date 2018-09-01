@@ -40,7 +40,7 @@ const program = toy(fragment, (gl, shader) => {
   shader.uniforms.uTime = Date.now() - start; /* eslint-disable-line */
 });
 
-perf.onChange((e) => {
+perf.on('change', (e) => {
   program.shader.uniforms.uPerfLevel = e;
   const level = [
     'damn get off 😭',
