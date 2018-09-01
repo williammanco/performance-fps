@@ -6067,7 +6067,7 @@ void main() {
       <li><span>Average FPS</span><span><b>${round(1000 / perf.average, 1)}</b></span></li>
       <li><br /></li>
       <li><span>Ms</span><span><b>${round(perf.ms, 1)}</b></span></li>
-      <li><span>FPS</span><span><b>${round(perf.currentFps, 1)}</b></span></li>
+      <li><span>FPS</span><span><b>${round(1000 / perf.ms, 1)}</b></span></li>
     </ul>
   `;
 	  requestAnimationFrame(rAF);
