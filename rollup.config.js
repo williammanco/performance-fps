@@ -17,7 +17,7 @@ export default [
   {
     input: 'src/main.js',
     output: {
-      name: 'performanceFps',
+      name: 'PerformanceFps',
       file: pkg.browser,
       format: 'umd',
       sourceMap: !production,
@@ -54,7 +54,7 @@ export default [
     input: 'src/main.js',
     external: ['ms'],
     output: {
-      name: 'performanceFps',
+      name: 'PerformanceFps',
       file: 'performance-fps.min.js',
       format: 'umd',
       sourceMap: !production,
@@ -66,7 +66,7 @@ export default [
   {
     input: 'src/test/index.js',
     output: {
-      name: 'performanceFps',
+      name: 'PerformanceFps',
       file: 'public/bundle.js',
       format: 'umd',
     },

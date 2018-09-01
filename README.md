@@ -5,18 +5,16 @@ Use this tool to check current state of performance based on fps/ms of project d
 
 [Demo](https://williammanco.github.io/performance-fps/public/)
 
-Used in different awarded site (soon a list).
+(soon a list of who use it).
 
 ## Features
 
-Long description wip...
-
 	🎲 highly configurable
 	☮️ dependecy free
-	📦 only 2Kb
+	📦 only 2kB
 	🚀 every frame ~0.07ms
-	⚾ no bouncing effect (increase/decrease perf)
-	🧟 execeute live only on rAF (no internal timing)
+	⚾ control bouncing effect (increase/decrease perf)
+	🧟 execute live only on rAF (no internal timing)
 	🙈 check reset when change tab (visibilitychange)
 
 
@@ -53,7 +51,7 @@ const rAF = () => {
 ```
 Use onChange method to update your code with the performance when level change or check simply properties `checkFps.performance` in your code when deserve
 ```
-checkFps.onChange((e) => {
+checkFps.on('change', (e) => {
   this.yourPerformanceLevel = e;
 });
 ```
@@ -68,16 +66,16 @@ Use samples and accuracy to increase the speed and quality of check.
 ```
 const checkFps = new PerformanceFps({
     min: -2,
-    max: 3,
+    max: 2,
     start: 0,
-    samples: 30,
-    accuracy: 96,
-    delay: 1000,
+    samples: 20,
+    accuracy: 320,
+    delay: 2000,
     maxFps: 60,
     minFps: 30,
-    checkFps: 55,
+    checkFps: 54,
     upperCheckFps: 58,
-    maxTryToUpper: 3,
+    maxTryToUpper: 1,
     reCheckAfter: 60000,
 });
 ```
@@ -85,16 +83,16 @@ const checkFps = new PerformanceFps({
 Options | Default | Unit | Info
 --- | --- | --- | ---
 `min`| `-2` | `level` | use this option to limit min level of performance returned
-`max`| `3` | `level` | use this option to limit max level of performance returned
+`max`| `2` | `level` | use this option to limit max level of performance returned
 `start`| `0` | `level` | start value of level
-`samples`| `30` | `-` | used to take the average of fps, more (not much) samples make the average more accurate but increase the time to check, one sample take every ms value on accuracy option
-`accuracy`| `96` | `ms` | time between every samples, more time less quality of check, this depends on current performance, if you have ~16ms/60fps the sample is taken every ~96ms
-`delay`| `1000` | `ms` | start to check after this value
+`samples`| `20` | `-` | used to take the average of fps, more (not much) samples make the average more accurate but increase the time to check, one sample take every ms value on accuracy option
+`accuracy`| `320` | `ms` | time between every samples, more time less quality of check, this depends on current performance, if you have ~16ms/60fps the sample is taken every ~320ms
+`delay`| `2000` | `ms` | start to check after this value
 `maxFps`| `60` | `fps` | change if limit is upper than 60fps
 `minFps`| `30` | `fps` | if current performance is lower a minimum level of performance is setted
-`checkFps`| `55` | `fps` | limit of check, if lower decrease the level
+`checkFps`| `54` | `fps` | limit of check, if lower decrease the level
 `upperCheckFps`| `58` | `fps` | check update with this value to try upper level
-`maxTryToUpper`| `3` | `times` | used to try to increase value if check fail more than 3 times
+`maxTryToUpper`| `1` | `times` | used to try to increase value if check fail more than 1 times
 `reCheckAfter`| `60000` | `ms` | after 60 seconds start recheck (and try to increase value)
 
 
