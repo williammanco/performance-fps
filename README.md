@@ -3,6 +3,8 @@
 Performance check tool for **scalable** quality project.
 Use this tool to check current state of performance based on fps/ms of project during navigation.
 
+[Demo](https://williammanco.github.io/performance-fps/public/)
+
 Used in different awarded site (soon a list).
 
 ## Features
@@ -23,6 +25,8 @@ Long description wip...
 Supports UMD, AMD and CommonJS format.
 
 With NPM or yarn or download and use script
+
+Clone this repository to generate build or take "performance-fps.min.js" from root
 
 ```
 npm i performance-fps
