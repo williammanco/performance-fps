@@ -7,20 +7,55 @@
 
 	<style>
 		body {
-			font-family: 'Helvetica Neue', Arial, sans-serif;
+			font-family: monospace, Arial, sans-serif;
 			color: #333;
 			font-weight: 300;
-			font-size: 5vw;
-			padding: 5vh 5vw;
+			font-size: 12px;
+			padding: 30px;
 		}
 		#app {
 			position: relative;
 			z-index: 1;
+			display: inline-block;
+		    background-color: #111;
+		    padding: 20px;
+		    border-radius: 5px;
+		    color: #fff;
+		}
+		p {
+			padding: 2px 0;
+			margin: 0;
+		}
+		h5 {
+			margin-top: 0;
+		    font-size: 12px;
+		    font-weight: bold;
+		    text-transform: uppercase;
+		}
+		ul, li {
+			list-style: none;
+			padding: 0;
+		}
+		ul {
+			margin: 50px 0;
+		}
+		li {
+			display: flex;
+		}
+		span:last-of-type {
+			text-align: right;
+			margin-right: 0;
+			margin-left: auto;
 		}
 	</style>
 </head>
 <body>
-	<p id="app"></p>
+	<main id="app">
+		<h5>Adapt your project by current performance</h5>
+		<p id="info"></p>
+		<p id="onupdate"></p>
+		<p id="onevent"></p>
+	</main>
 	<script src='bundle.js'></script>
 </body>
 </html>

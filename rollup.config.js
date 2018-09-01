@@ -51,7 +51,7 @@ export default [
     ],
   },
   {
-    input: 'src/index.js',
+    input: 'src/test/index.js',
     output: {
       file: 'public/bundle.js',
       format: 'iife',
