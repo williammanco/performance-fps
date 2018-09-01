@@ -17,7 +17,7 @@ export default [
   {
     input: 'src/main.js',
     output: {
-      name: 'index',
+      name: 'performanceFps',
       file: pkg.browser,
       format: 'umd',
       sourceMap: !production,
@@ -51,13 +51,27 @@ export default [
     ],
   },
   {
-    input: 'src/test/index.js',
+    input: 'src/main.js',
+    external: ['ms'],
     output: {
-      file: 'public/bundle.js',
-      format: 'iife',
+      name: 'performanceFps',
+      file: 'performance-fps.min.js',
+      format: 'umd',
+      sourceMap: !production,
     },
     plugins: [
-      !production && resolve(),
+      production && terser(),
+    ],
+  },
+  {
+    input: 'src/test/index.js',
+    output: {
+      name: 'performanceFps',
+      file: 'public/bundle.js',
+      format: 'umd',
+    },
+    plugins: [
+      production && resolve(),
       cleaner({
         targets: [
           './public/bundle.*',
