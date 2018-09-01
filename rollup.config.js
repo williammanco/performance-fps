@@ -15,9 +15,9 @@ const production = !process.env.ROLLUP_WATCH;
 
 export default [
   {
-    input: 'src/main.js',
+    input: 'src/index.js',
     output: {
-      name: 'performanceFps',
+      name: 'PerformanceFps',
       file: pkg.browser,
       format: 'umd',
       sourceMap: !production,
@@ -40,7 +40,7 @@ export default [
     ],
   },
   {
-    input: 'src/main.js',
+    input: 'src/index.js',
     external: ['ms'],
     output: [
       { file: pkg.main, format: 'cjs', sourceMap: !production },
@@ -51,10 +51,10 @@ export default [
     ],
   },
   {
-    input: 'src/main.js',
+    input: 'src/index.js',
     external: ['ms'],
     output: {
-      name: 'performanceFps',
+      name: 'PerformanceFps',
       file: 'performance-fps.min.js',
       format: 'umd',
       sourceMap: !production,
@@ -66,7 +66,7 @@ export default [
   {
     input: 'src/test/index.js',
     output: {
-      name: 'performanceFps',
+      name: 'PerformanceFps',
       file: 'public/bundle.js',
       format: 'umd',
     },

@@ -1,5 +1,5 @@
 import toy from 'gl-toy'; // eslint-disable-line import/no-extraneous-dependencies
-import PerformanceFps from '../main';
+import PerformanceFps from '../index';
 import fragment from './fragment.glsl';
 
 document.getElementById('info').innerHTML = 'Check the performance ...';
