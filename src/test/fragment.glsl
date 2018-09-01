@@ -57,7 +57,13 @@ precision highp float;
     }
 
     if (uPerfLevel == 2) {
-      for (int i = 0; i < 30; i++) {
+      for (int i = 0; i < 20; i++) {
+          f += fbm(st + shift * 0.5) * float(i) * 0.1;
+      }
+    }
+
+    if (uPerfLevel == 3) {
+      for (int i = 0; i < 40; i++) {
           f += fbm(st + shift * 0.5) * float(i) * 0.1;
       }
     }
