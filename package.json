@@ -1,6 +1,7 @@
 {
   "name": "performance-fps",
-  "version": "1.2.6",
+  "version": "1.2.7",
+  "description": "Performance check tool for scalable quality project.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.umd.js",
@@ -10,6 +11,19 @@
   },
   "files": [
     "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/williammanco/performance-fps.git"
+  },
+  "author": "William Manco",
+  "license": "MIT",
+  "keywords": [
+    "performance",
+    "fps",
+    "check",
+    "tool",
+    "scalable"
   ],
   "devDependencies": {
     "babel-eslint": "^8.2.3",

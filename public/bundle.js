@@ -5825,15 +5825,15 @@ void main() {
 	        min: -2,
 	        max: 2,
 	        start: 0,
-	        samples: 20,
-	        accuracy: 320,
+	        samples: 100,
+	        accuracy: 64,
 	        delay: 2000,
 	        maxFps: 60,
 	        minFps: 30,
 	        checkFps: 54,
 	        upperCheckFps: 58,
 	        maxTryToUpper: 1,
-	        reCheckAfter: 60000,
+	        reCheckAfter: false,
 	      },
 	      props,
 	    );
@@ -5927,6 +5927,7 @@ void main() {
 	    } = this.props;
 
 	    this.upper = 0;
+	    this.failIncrement = 0;
 	    this.ms = this.constructor.fpsToMs(maxFps);
 	    this.average = this.ms;
 
@@ -5936,7 +5937,6 @@ void main() {
 	      this.reCheckAfter = reCheckAfter;
 	      this.checkCurrentFps = checkFps;
 	      this.isTooLow = false;
-	      this.failIncrement = 0;
 	      this.elapsedTime = 0;
 	      this.resetTime = 0;
 	      this.store = [];
@@ -6024,7 +6024,7 @@ void main() {
 	      this.prevPerformance = this.performance;
 	      this.delay = 0;
 
-	      if (time > this.reCheckAfter) {
+	      if (this.reCheckAfter && time > this.reCheckAfter) {
 	        this.reset(true);
 	        this.reCheckAfter += time;
 	        this.resetTime += 1;
@@ -6046,7 +6046,11 @@ void main() {
 
 	document.getElementById('info').innerHTML = 'Check the performance ...';
 
-	const perf = new PerformanceFps();
+	const perf = new PerformanceFps({
+	  max: 3,
+	  delay: 500,
+	  maxTryToUpper: 1,
+	});
 	const round = (value, precision) => {
 	  const multiplier = window.Math.pow(10, precision || 0);
 	  return Math.round(value * multiplier) / multiplier;

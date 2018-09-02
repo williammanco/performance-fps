@@ -66,12 +66,11 @@ export default [
   {
     input: 'src/test/index.js',
     output: {
-      name: 'PerformanceFps',
       file: 'public/bundle.js',
-      format: 'umd',
+      format: !production ? 'iife' : 'umd',
     },
     plugins: [
-      production && resolve(),
+      resolve(),
       cleaner({
         targets: [
           './public/bundle.*',
