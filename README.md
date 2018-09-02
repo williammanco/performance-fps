@@ -86,7 +86,7 @@ Options | Default | Unit | Info
 `max`| `2` | `level` | use this option to limit max level of performance returned
 `start`| `0` | `level` | start value of level
 `samples`| `100` | `-` | used to take the average of fps, more (not much) samples make the average more accurate but increase the time to check, one sample take every ms value on accuracy option
-`accuracy`| `64` | `ms` | time between every samples, more time less quality of check, this depends on current performance, if you have ~16ms/60fps the sample is taken every ~320ms
+`accuracy`| `64` | `ms` | time between every samples, more time less quality of check, this depends on current performance, if you have ~16ms/60fps the sample is taken every ~64ms
 `delay`| `2000` | `ms` | start to check after this value
 `maxFps`| `60` | `fps` | change if limit is upper than 60fps
 `minFps`| `30` | `fps` | if current performance is lower a minimum level of performance is setted
