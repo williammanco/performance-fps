@@ -41,15 +41,15 @@ export default class PerformanceFps {
         min: -2,
         max: 2,
         start: 0,
-        samples: 20,
-        accuracy: 320,
+        samples: 100,
+        accuracy: 64,
         delay: 2000,
         maxFps: 60,
         minFps: 30,
         checkFps: 54,
         upperCheckFps: 58,
         maxTryToUpper: 1,
-        reCheckAfter: 60000,
+        reCheckAfter: false,
       },
       props,
     );
@@ -143,6 +143,7 @@ export default class PerformanceFps {
     } = this.props;
 
     this.upper = 0;
+    this.failIncrement = 0;
     this.ms = this.constructor.fpsToMs(maxFps);
     this.average = this.ms;
 
@@ -152,7 +153,6 @@ export default class PerformanceFps {
       this.reCheckAfter = reCheckAfter;
       this.checkCurrentFps = checkFps;
       this.isTooLow = false;
-      this.failIncrement = 0;
       this.elapsedTime = 0;
       this.resetTime = 0;
       this.store = [];
@@ -240,7 +240,7 @@ export default class PerformanceFps {
       this.prevPerformance = this.performance;
       this.delay = 0;
 
-      if (time > this.reCheckAfter) {
+      if (this.reCheckAfter && time > this.reCheckAfter) {
         this.reset(true);
         this.reCheckAfter += time;
         this.resetTime += 1;

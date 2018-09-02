@@ -4,7 +4,11 @@ import fragment from './fragment.glsl';
 
 document.getElementById('info').innerHTML = 'Check the performance ...';
 
-const perf = new PerformanceFps();
+const perf = new PerformanceFps({
+  max: 3,
+  delay: 500,
+  maxTryToUpper: 1,
+});
 const round = (value, precision) => {
   const multiplier = window.Math.pow(10, precision || 0);
   return Math.round(value * multiplier) / multiplier;
