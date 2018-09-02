@@ -68,15 +68,15 @@ const checkFps = new PerformanceFps({
     min: -2,
     max: 2,
     start: 0,
-    samples: 20,
-    accuracy: 320,
+    samples: 100,
+    accuracy: 64,
     delay: 2000,
     maxFps: 60,
     minFps: 30,
     checkFps: 54,
     upperCheckFps: 58,
     maxTryToUpper: 1,
-    reCheckAfter: 60000,
+    reCheckAfter: false,
 });
 ```
 
@@ -85,8 +85,8 @@ Options | Default | Unit | Info
 `min`| `-2` | `level` | use this option to limit min level of performance returned
 `max`| `2` | `level` | use this option to limit max level of performance returned
 `start`| `0` | `level` | start value of level
-`samples`| `50` | `-` | used to take the average of fps, more (not much) samples make the average more accurate but increase the time to check, one sample take every ms value on accuracy option
-`accuracy`| `64` | `ms` | time between every samples, more time less quality of check, this depends on current performance, if you have ~16ms/60fps the sample is taken every ~320ms
+`samples`| `100` | `-` | used to take the average of fps, more (not much) samples make the average more accurate but increase the time to check, one sample take every ms value on accuracy option
+`accuracy`| `64` | `ms` | time between every samples, more time less quality of check, this depends on current performance, if you have ~16ms/60fps the sample is taken every ~64ms
 `delay`| `2000` | `ms` | start to check after this value
 `maxFps`| `60` | `fps` | change if limit is upper than 60fps
 `minFps`| `30` | `fps` | if current performance is lower a minimum level of performance is setted
