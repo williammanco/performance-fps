@@ -1,7 +1,6 @@
 # Performance FPS
 
-⭐️
-[New fast, small and functional version] (https://github.com/williammanco/check-performance)
+⭐️ [New fast, small and functional version](https://github.com/williammanco/check-performance)
 
 Performance check tool for **scalable** quality project.
 Use this tool to check current state of performance based on fps/ms of project during navigation.
