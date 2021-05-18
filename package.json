@@ -37,7 +37,7 @@
     "rollup-plugin-glsl": "^1.2.0",
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-replace": "^2.0.0",
-    "rollup-plugin-serve": "^0.4.2",
+    "rollup-plugin-serve": "^1.0.2",
     "rollup-plugin-terser": "^1.0.1"
   },
   "dependencies": {
